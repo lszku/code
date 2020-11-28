@@ -2,9 +2,6 @@ from datetime import date
 
 import model
 from model import Batch, OrderLine
-from sqlalchemy.orm import sessionmaker
-
-from fixtures import db_session, db_engine, db_session_factory
 
 
 def test_allocating_to_a_batch_reduces_the_available_quantity():
@@ -64,11 +61,12 @@ def test_can_only_deallocate_allocated_lines():
     assert batch.available_quantity == 20
 
 
-def test_orrderline_mapper_can_load_lines(db_session):
-    db_session.execute('insert into order_lines (orderid, sku, qty) values '
-                       '("order1", "red_chair", 12)')
+def test_orderline_mapper_can_load_lines(session):
+    session.execute('insert into order_lines (orderid, sku, qty) values '
+                       '("order1", "red_chair", 12), ("order2", "blue_table", 13)')
     expected = [
-        model.OrderLine('order1', 'red_chair', 12)
+        model.OrderLine('order1', 'red_chair', 12),
+        model.OrderLine(orderid='order2', sku='blue_table', qty=13)
     ]
 
-    assert db_session.query(model.OrderLine).all() == expected
+    assert session.query(model.OrderLine).all() == expected

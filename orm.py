@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, BigInteger, MetaData, Table
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, mapper
+from sqlalchemy import Column, Integer, String, MetaData, Table
+from sqlalchemy.orm import mapper
 
 import model
 
@@ -10,7 +9,7 @@ order_lines = Table(
     'order_lines', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('sku', String(255)),
-    Column('qty'),
+    Column('qty', Integer),
     Column('orderid', String(255)),
 )
 
